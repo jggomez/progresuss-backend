@@ -1,12 +1,11 @@
 
-
-const scoreProcessor = require('./../../addiction/domain/scoreProcessor.js');
-const bpAnswerUser = require('./../../answersUser/domain/BPanswerUser.js');
-const answerDAO = require('./../../answersUser/data/answersUserDAO.js');
-const bpQuestionAnswer = require('./../../questionAnswers/domain/BPQuestionAnswer.js');
-const questionAnswerDAO = require('./../../questionAnswers/data/questionAnswerDAO.js');
-const bpTypeTestScore = require('./../../configuration/domain/BPTypeTestScore.js');
-const typeTestScoreDAO = require('./../../configuration/data/typeTestScoreDAO.js');
+const scoreProcessor = require('./../addiction/domain/scoreProcessor.js');
+const bpAnswerUser = require('./../answersUser/domain/BPanswerUser.js');
+const answerDAO = require('./../answersUser/data/answersUserDAO.js');
+const bpQuestionAnswer = require('./../questionAnswers/domain/BPQuestionAnswer.js');
+const questionAnswerDAO = require('./../questionAnswers/data/questionAnswerDAO.js');
+const bpTypeTestScore = require('./../configuration/domain/BPTypeTestScore.js');
+const typeTestScoreDAO = require('./../configuration/data/typeTestScoreDAO.js');
 
 exports.handler = (req, resp, next) => {
 
