@@ -1,11 +1,11 @@
 
-class ScoreProcessor {
+class BPSummationProcessor {
 
-    constructor(BPAnswerUser,
-        BPQuestionAnswer,
+    constructor(BPAnswersUser,
+        BPQuestionTypeTest,
         BPTypeTestScore) {
-        this.BPAnswerUser = BPAnswerUser;
-        this.BPQuestionAnswer = BPQuestionAnswer;
+        this.BPAnswersUser = BPAnswersUser;
+        this.BPQuestionTypeTest = BPQuestionTypeTest;
         this.BPTypeTestScore = BPTypeTestScore;
     }
 
@@ -13,7 +13,7 @@ class ScoreProcessor {
 
         let typeTestId;
 
-        return this.BPAnswerUser.getAnswerUserByID(idAnswerUser).then(answersUser => {
+        return this.BPAnswersUser.getAnswersUserByID(idAnswerUser).then(answersUser => {
 
             //console.log(answersUser);
             typeTestId = answersUser.typeTestId;
@@ -22,7 +22,7 @@ class ScoreProcessor {
             answersUser.answers.forEach(answerUser => {
                 //console.log(answerUser);
                 arrAnswersPromises.push(
-                    this.BPQuestionAnswer
+                    this.BPQuestionTypeTest
                         .getByQuestionAndAnswer(answerUser.idQuestion, answerUser.idAnswer));
             });
 
@@ -31,12 +31,12 @@ class ScoreProcessor {
 
             return new Promise((resolve, reject) => {
                 //console.log(answers)
-
                 let score = 0;
 
                 try {
 
                     answers.forEach(answer => {
+                        console.log('Answer value = ' + answer.value);
                         score += answer.value;
                     })
                 } catch (err) {
@@ -47,8 +47,7 @@ class ScoreProcessor {
             });
 
         }).then(score => {
-
-            //console.log(score);
+            // console.log(score);
 
             return this.BPTypeTestScore
                 .getByTypeTestAndScore(typeTestId, score);
@@ -61,10 +60,8 @@ class ScoreProcessor {
             };
 
         });
-
     }
-
 
 }
 
-exports.ScoreProcessor = ScoreProcessor;
+exports.BPSummationProcessor = BPSummationProcessor;

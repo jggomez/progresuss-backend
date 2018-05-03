@@ -12,10 +12,7 @@ class AnswersUserDAO {
             .doc(`${id}`)
             .get().then(resp => resp.data());
     }
-
+    
 }
 
 exports.AnswersUserDAO = AnswersUserDAO;
-
-
-

@@ -1,15 +1,15 @@
 
 
-class BPanswerUser {
+class BPAnswersUser {
 
     constructor(answerUserDAO) {
         this.answerUserDAO = answerUserDAO;
     }
 
-    getAnswerUserByID(id) {
+    getAnswersUserByID(id) {
         return this.answerUserDAO.getById(id);
     }
 
 }
 
-exports.BPanswerUser = BPanswerUser;
+exports.BPAnswersUser = BPAnswersUser;

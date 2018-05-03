@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 
-class QuestionAnswerDAO {
+class QuestionTypeTestDAO {
 
     constructor() {
         this.ref = 'questionTypeTest';
@@ -13,7 +13,6 @@ class QuestionAnswerDAO {
             .collection("answers")
             .doc(answerId)
             .get().then(documentSnapshot => {
-
                 let answer = undefined;
 
                 if (documentSnapshot.exists) {
@@ -26,4 +25,4 @@ class QuestionAnswerDAO {
 
 }
 
-exports.QuestionAnswerDAO = QuestionAnswerDAO;
+exports.QuestionTypeTestDAO = QuestionTypeTestDAO;

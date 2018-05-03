@@ -10,7 +10,7 @@ class TypeTestScoreDAO {
     getByTypeTestAndScore(typeTestId, score) {
         return this.adminDB.collection(`${this.ref}`)
             .where("typeTestId", "==", typeTestId)
-            .where("minScore", "<=", score)            
+            .where("minScore", "<=", score)
             .get().then(querySnapshot => {
 
                 let result = undefined;
@@ -20,14 +20,13 @@ class TypeTestScoreDAO {
                         if(score <= document.data().maxScore){
                             result = document.data();    
                         }                        
-                    })
-                    
+                    })                    
                 }
 
                 return result;
             });
     }
-
+    
 }
 
 exports.TypeTestScoreDAO = TypeTestScoreDAO;
