@@ -36,7 +36,7 @@ class BPSummationProcessor {
                 try {
 
                     answers.forEach(answer => {
-                        console.log('Answer value = ' + answer.value);
+                        //console.log('Answer value = ' + answer.value);
                         score += answer.value;
                     })
                 } catch (err) {
@@ -56,6 +56,7 @@ class BPSummationProcessor {
 
             return {
                 numSessions: recommendation.numSessions,
+                therapeuticPackage: recommendation.therapeuticPackage,
                 result: recommendation.result
             };
 
