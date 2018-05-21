@@ -26,6 +26,17 @@ class Utility {
         return [year, month, day].join('-');
     }
 
+    getAge(dateString) {
+        let year = Number(dateString.substr(0, 4));
+        let month = Number(dateString.substr(5, 2)) - 1;
+        let day = Number(dateString.substr(8, 12));
+        var birthDate = new Date(year, month, day);
+        var ageDifMs = Date.now() - birthDate.getTime();
+        var ageDate = new Date(ageDifMs);
+
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+
     /**
      * Convert a `Map` to a standard
      * JS object recursively.
