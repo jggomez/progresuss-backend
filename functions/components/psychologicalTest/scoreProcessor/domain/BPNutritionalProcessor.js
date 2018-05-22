@@ -1,9 +1,12 @@
 const bpUsers = require('./../../security/domain/BPUsers.js');
 const usersDAO = require('./../../security/data/usersDAO.js');
 const utility = require('./../../../util/Utility.js');
+const nutritionalLoseWeightMapper = require('./../util/NutritionalLoseWeightMapper.js');
+const nutritionalBulimiaMapper = require('./../util/NutritionalBulimiaMapper.js');
+const nutritionalBodyDissatisfactionMapper = require('./../util/NutritionalBodyDissatisfactionMapper.js');
 
 class BPNutritionalProcessor {
-
+    
     constructor(BPTypeTestScore) {
         this.BPTypeTestScore = BPTypeTestScore;
     }
@@ -62,8 +65,7 @@ class BPNutritionalProcessor {
             // Obtener usuario
             return new Promise((resolve, reject) => {
             
-                let objUser;
-    
+                let objUser;    
                 try {
                     let objBpUser =
                         new bpUsers.BPUsers(
@@ -79,48 +81,35 @@ class BPNutritionalProcessor {
             });
         }).then(user => {
 
-            // Obtener info usuario
+            // Obtener info usuario: Edad y Género
             let objUtility = new utility.Utility();
             let userAge = objUtility.getAge(user.birthDate);
             let userGender = user.gender;
 
+            // Calcular percentiles para cada categoría
             if(loseWeightScore === 0 && bulimiaScore === 0 && bodyDissatisfactionScore === 0) {
                 loseWeightPercentile = 1;
                 bulimiaPercentile = 1;
                 bodyDissatisfactionPercentile = 1;
+            } else {
+                // Calcular percentil 'Deseos de adelgazar'
+                let objLoseWeightMapper = new nutritionalLoseWeightMapper.NutritionalLoseWeightMapper();
+                loseWeightPercentile = objLoseWeightMapper.calculatePercentile(userAge, userGender, loseWeightScore);
+                // Calcular percentil 'Bulimia'
+                let objBulimiaMapper = new nutritionalBulimiaMapper.NutritionalBulimiaMapper();
+                bulimiaPercentile = objBulimiaMapper.calculatePercentile(userAge, userGender, bulimiaScore);
+                // Calcular percentil 'Insatisfacción corporal'
+                let objBodyDissatisfactionMapper = new nutritionalBodyDissatisfactionMapper.NutritionalBodyDissatisfactionMapper();
+                bodyDissatisfactionPercentile = objBodyDissatisfactionMapper.calculatePercentile(userAge, userGender, bodyDissatisfactionScore);
             }
 
-            var myMap = new Map();
-            myMap.set(0, 10);
-            myMap.set(1, 20);
-            myMap.set(2, 30);
-            myMap.set(3, 50);
-
+            console.log("userAge = " + userAge);
+            console.log("userGender = " + userGender);
             console.log("loseWeightScore = " + loseWeightScore);
-            loseWeightPercentile = myMap.get(loseWeightScore);
             console.log("loseWeightPercentile = " + loseWeightPercentile);
-            
-            // let userBirthDate = user.birthDate;
-            // let year = Number(userBirthDate.substr(0, 4));
-            // let month = Number(userBirthDate.substr(5, 2)) - 1;
-            // let day = Number(userBirthDate.substr(8, 12));
-            // var birthDate = new Date(year, month, day);
-            // console.log("birthDate = " + birthDate);
-            // var today = new Date();
-            // console.log("today = " + today);
-            // Obtener sexo
-
-
-            // Calcular con base a tablas
-
-            // console.log("loseWeightScore = " + loseWeightScore);
-            // console.log("loseWeightCounter = " + loseWeightCounter);
-            // console.log("bulimiaScore = " + bulimiaScore);
-            // console.log("bulimiaCounter = " + bulimiaCounter);
-            // console.log("bodyDissatisfactionScore = " + bodyDissatisfactionScore);
-            // console.log("bodyDissatisfactionCounter = " + bodyDissatisfactionCounter);
-            console.log("loseWeightPercentile = " + loseWeightPercentile);
+            console.log("bulimiaScore = " + bulimiaScore);
             console.log("bulimiaPercentile = " + bulimiaPercentile);
+            console.log("bodyDissatisfactionScore = " + bodyDissatisfactionScore);
             console.log("bodyDissatisfactionPercentile = " + bodyDissatisfactionPercentile);
 
             return "";
