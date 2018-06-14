@@ -4,6 +4,7 @@ const utility = require('./../../../util/Utility.js');
 const nutritionalLoseWeightMapper = require('./../util/NutritionalLoseWeightMapper.js');
 const nutritionalBulimiaMapper = require('./../util/NutritionalBulimiaMapper.js');
 const nutritionalBodyDissatisfactionMapper = require('./../util/NutritionalBodyDissatisfactionMapper.js');
+const nutritionalPercentilLevelCalculator = require('./../util/NutritionalPercentilLevelCalculator.js');
 
 class BPNutritionalProcessor {
     
@@ -12,21 +13,16 @@ class BPNutritionalProcessor {
     }
 
     calculate(typeTestId, answers, userId) {
-        //let score = 0;
-        // let scoreSpecial = 0;
-        // let countScore = 0;
-        // let countScoreSpecial = 0;
-        
         let loseWeightScore = 0;
-        let loseWeightCounter = 0;
         let loseWeightPercentile = 0;
+        let loseWeightPercentileLevel = 0;
         let bulimiaScore = 0;
-        let bulimiaCounter = 0;
         let bulimiaPercentile = 0;
+        let bulimiaPercentileLevel = 0;
         let bodyDissatisfactionScore = 0;
-        let bodyDissatisfactionCounter = 0;
         let bodyDissatisfactionPercentile = 0;
-        // let totalPercentile = 0;
+        let bodyDissatisfactionPercentileLevel = 0;
+        let totalPercentile = 0;
 
         return new Promise((resolve, reject) => {
 
@@ -40,19 +36,16 @@ class BPNutritionalProcessor {
                         loseWeightScore = answer.question.isSpecial ? 
                             loseWeightScore += answer.answer.valueSpecial :
                             loseWeightScore += answer.answer.value;
-                        loseWeightCounter++;
                     } else if(order === 4 || order === 5 || order === 28 || order === 38 ||
                         order === 46 || order === 53 || order === 61) {
                         bulimiaScore = answer.question.isSpecial ? 
                             bulimiaScore += answer.answer.valueSpecial :
                             bulimiaScore += answer.answer.value;
-                        bulimiaCounter++;
                     } else if(order === 2 || order === 9 || order === 12 || order === 19 ||
                         order === 31 || order === 45 || order === 55 || order === 59 || order === 62) {
                         bodyDissatisfactionScore = answer.question.isSpecial ? 
                             bodyDissatisfactionScore += answer.answer.valueSpecial :
                             bodyDissatisfactionScore += answer.answer.value;
-                        bodyDissatisfactionCounter++;
                     }
                 });
             } catch (err) {
@@ -103,16 +96,25 @@ class BPNutritionalProcessor {
                 bodyDissatisfactionPercentile = objBodyDissatisfactionMapper.calculatePercentile(userAge, userGender, bodyDissatisfactionScore);
             }
 
-            console.log("userAge = " + userAge);
-            console.log("userGender = " + userGender);
-            console.log("loseWeightScore = " + loseWeightScore);
-            console.log("loseWeightPercentile = " + loseWeightPercentile);
-            console.log("bulimiaScore = " + bulimiaScore);
-            console.log("bulimiaPercentile = " + bulimiaPercentile);
-            console.log("bodyDissatisfactionScore = " + bodyDissatisfactionScore);
-            console.log("bodyDissatisfactionPercentile = " + bodyDissatisfactionPercentile);
+            // Calcular el nivel del percentil (0=Bajo, 1=Medio, 2=Alto)
+            let objNutritionalPercentilLevelCalculator = new nutritionalPercentilLevelCalculator.NutritionalPercentilLevelCalculator();
+            loseWeightPercentileLevel = objNutritionalPercentilLevelCalculator.getPercentilLevel(loseWeightPercentile);
+            bulimiaPercentileLevel = objNutritionalPercentilLevelCalculator.getPercentilLevel(bulimiaPercentile);
+            bodyDissatisfactionPercentileLevel = objNutritionalPercentilLevelCalculator.getPercentilLevel(bodyDissatisfactionPercentile);
 
-            return "";
+            // Calcular el percentil total
+            loseWeightPercentileLevel = 2;
+            totalPercentile = objNutritionalPercentilLevelCalculator.getTotalLevel(
+                loseWeightPercentileLevel, bulimiaPercentileLevel, bodyDissatisfactionPercentileLevel);
+
+            // Obtener respuesta
+            return this.BPTypeTestScore.getByTypeTestAndScore(typeTestId, totalPercentile);
+        }).then(recommendation => {
+            return {
+                numSessions: recommendation.numSessions,
+                therapeuticPackage: recommendation.therapeuticPackage,
+                result: recommendation.result
+            };
         });
     }
 }
