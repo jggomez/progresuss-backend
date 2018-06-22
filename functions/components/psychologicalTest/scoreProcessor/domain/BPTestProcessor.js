@@ -1,5 +1,6 @@
 const bpSummationProcessor = require('./../../scoreProcessor/domain/BPSummationProcessor.js');
 const bpNutritionalProcessor = require('./../../scoreProcessor/domain/BPNutritionalProcessor.js');
+const bpCoupleProcessor = require('./../../scoreProcessor/domain/BPCoupleProcessor');
 const bpTypeTestScore = require('./../../configuration/domain/BPTypeTestScore.js');
 const typeTestScoreDAO = require('./../../configuration/data/typeTestScoreDAO.js');
 
@@ -27,7 +28,6 @@ class BPTestProcessor {
             let arrAnswersPromises = [];
 
             answersUser.answers.forEach(answerUser => {
-                //console.log(answerUser);
                 arrAnswersPromises.push(
                     this.BPQuestionTypeTest
                         .getByQuestionAndAnswerGraph(answerUser.idQuestion, answerUser.idAnswer));
@@ -69,6 +69,14 @@ class BPTestProcessor {
                         )
                     );
                 return objBpNutritionalProcessor.calculate(typeTestId, arrAnswers, userId);
+            } else if(objTypeTest.qualificationType === 3) {
+                const objBpCoupleProcessor =
+                    new bpCoupleProcessor.BPCoupleProcessor(
+                        new bpTypeTestScore.BPTypeTestScore(
+                            new typeTestScoreDAO.TypeTestScoreDAO()
+                        )
+                    );
+                return objBpCoupleProcessor.calculate(typeTestId, arrAnswers, userId);
             }
     
             return "N/A";

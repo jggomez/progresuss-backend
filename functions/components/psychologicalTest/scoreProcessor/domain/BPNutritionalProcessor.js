@@ -103,7 +103,6 @@ class BPNutritionalProcessor {
             bodyDissatisfactionPercentileLevel = objNutritionalPercentilLevelCalculator.getPercentilLevel(bodyDissatisfactionPercentile);
 
             // Calcular el percentil total
-            loseWeightPercentileLevel = 2;
             totalPercentile = objNutritionalPercentilLevelCalculator.getTotalLevel(
                 loseWeightPercentileLevel, bulimiaPercentileLevel, bodyDissatisfactionPercentileLevel);
 
