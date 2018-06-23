@@ -15,6 +15,7 @@ class BPCoupleProcessor {
         let emotionalSatisfactionPercentileLevel = 0;
         let organizationalSatisfactionPercentileLevel = 0;
         let totalPercentile = 0;
+        let objCouplePercentileLevelCalculator;
 
         return new Promise((resolve, reject) => {
 
@@ -39,7 +40,7 @@ class BPCoupleProcessor {
         }).then(res => {
 
             // Calcular el nivel del percentil (0=Bajo, 1=Medio, 2=Alto)
-            let objCouplePercentileLevelCalculator = new couplePercentileLevelCalculator.CouplePercentileLevelCalculator();
+            objCouplePercentileLevelCalculator = new couplePercentileLevelCalculator.CouplePercentileLevelCalculator();
             interactionSatisfactionPercentileLevel = objCouplePercentileLevelCalculator.getInteractionSatisfaction(interactionSatisfactionScore);
             emotionalSatisfactionPercentileLevel = objCouplePercentileLevelCalculator.getEmotionalSatisfaction(emotionalSatisfactionScore);
             organizationalSatisfactionPercentileLevel = objCouplePercentileLevelCalculator.getOrganizationalSatisfaction(organizationalSatisfactionScore);
@@ -47,21 +48,19 @@ class BPCoupleProcessor {
             totalPercentile = objCouplePercentileLevelCalculator.getTotalLevel(
                 interactionSatisfactionPercentileLevel, emotionalSatisfactionPercentileLevel, organizationalSatisfactionPercentileLevel);
 
-            console.log("interactionSatisfactionScore = " + interactionSatisfactionScore);
-            console.log("emotionalSatisfactionScore = " + emotionalSatisfactionScore);
-            console.log("organizationalSatisfactionScore = " + organizationalSatisfactionScore);
-            console.log("interactionSatisfactionPercentileLevel = " + interactionSatisfactionPercentileLevel);
-            console.log("emotionalSatisfactionPercentileLevel = " + emotionalSatisfactionPercentileLevel);
-            console.log("organizationalSatisfactionPercentileLevel = " + organizationalSatisfactionPercentileLevel);
-            console.log("totalPercentile = " + totalPercentile);
-
             // Obtener respuesta
             return this.BPTypeTestScore.getByTypeTestAndScore(typeTestId, totalPercentile);
         }).then(recommendation => {
+
+            let result = recommendation.result;
+            result = result.replace("AAA", objCouplePercentileLevelCalculator.getLevelDescription(interactionSatisfactionPercentileLevel));
+            result = result.replace("BBB", objCouplePercentileLevelCalculator.getLevelDescription(emotionalSatisfactionPercentileLevel));
+            result = result.replace("CCC", objCouplePercentileLevelCalculator.getLevelDescription(organizationalSatisfactionPercentileLevel));
+
             return {
                 numSessions: recommendation.numSessions,
                 therapeuticPackage: recommendation.therapeuticPackage,
-                result: recommendation.result
+                result: result
             };
         });
     }

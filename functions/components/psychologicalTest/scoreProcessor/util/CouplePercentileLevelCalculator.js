@@ -56,6 +56,18 @@ class CouplePercentileLevelCalculator {
 
         return 0;
     }
+
+    getLevelDescription(level) {
+        if(level === 0) {
+            return "Bajo";
+        } else if(level === 1) {
+            return "Medio";
+        } else if(level === 2) {
+            return "Alto";
+        }
+
+        return "";
+    }
 }
 
 exports.CouplePercentileLevelCalculator = CouplePercentileLevelCalculator;
