@@ -22,6 +22,7 @@ class BPTestProcessor {
 
         return this.BPAnswersUser.getAnswersUserByID(idAnswerUser).then(answersUser => {
 
+            console.log(answersUser);
             typeTestId = answersUser.typeTestId;
             userId = answersUser.userId;
             let arrAnswersPromises = [];
