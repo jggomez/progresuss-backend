@@ -39,17 +39,17 @@ class QuestionTypeTestDAO {
             }).then(res => {
                 return this.adminDB.collection(`${this.ref}`)
                     .doc(questionId)
-                    .get().then(documentSnapshot => {
-                        let question = undefined;
-                        if (documentSnapshot.exists) {
-                            question = documentSnapshot.data();                            
-                        }
+                    .get();
+            }).then(documentSnapshot => {
+                let question = undefined;
+                if (documentSnapshot.exists) {
+                    question = documentSnapshot.data();                            
+                }
 
-                        return {
-                            question: question, 
-                            answer: answer
-                        };
-                    });
+                return {
+                    question: question, 
+                    answer: answer
+                };
             });
     }
 
