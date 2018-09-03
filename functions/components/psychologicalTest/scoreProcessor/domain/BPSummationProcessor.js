@@ -5,7 +5,7 @@ class BPSummationProcessor {
         this.BPTypeTestScore = BPTypeTestScore;
     }
 
-    calculate(typeTestId, answers) {
+    calculate(typeTestId, answers, userId) {
 
         return new Promise((resolve, reject) => {
 
@@ -27,7 +27,8 @@ class BPSummationProcessor {
             return {
                 numSessions: recommendation.numSessions,
                 therapeuticPackage: recommendation.therapeuticPackage,
-                result: recommendation.result
+                result: recommendation.result,
+                userId: userId
             };
         });
 

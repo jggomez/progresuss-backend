@@ -112,7 +112,8 @@ class BPNutritionalProcessor {
             return {
                 numSessions: recommendation.numSessions,
                 therapeuticPackage: recommendation.therapeuticPackage,
-                result: recommendation.result
+                result: recommendation.result,
+                userId: userId
             };
         });
     }

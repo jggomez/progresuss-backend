@@ -23,7 +23,7 @@ class BPTestProcessor {
 
         return this.BPAnswersUser.getAnswersUserByID(idAnswerUser).then(answersUser => {
 
-            console.log(answersUser);
+            //console.log(answersUser);
             typeTestId = answersUser.typeTestId;
             userId = answersUser.userId;
             let arrAnswersPromises = [];
@@ -61,7 +61,7 @@ class BPTestProcessor {
                             new typeTestScoreDAO.TypeTestScoreDAO()
                         )
                     );
-                return objBpSummationProcessor.calculate(typeTestId, arrAnswers);
+                return objBpSummationProcessor.calculate(typeTestId, arrAnswers, userId);
             } else if(objTypeTest.qualificationType === 2) {
                 const objBpNutritionalProcessor =
                     new bpNutritionalProcessor.BPNutritionalProcessor(

@@ -9,6 +9,9 @@ const questionTypeTestDAO = require('./../configuration/data/questionTypeTestDAO
 // const typeTestScoreDAO = require('./../configuration/data/typeTestScoreDAO.js');
 const bpTypeTest = require('./../configuration/domain/BPTypeTest.js');
 const typeTestDAO = require('./../configuration/data/typeTestDAO.js');
+const result = require('./../results/ResultUserEmail.js');
+const bpUser = require('./../user/domain/BPUser.js')
+const userDAO = require('./../user/data/UserDAO.js')
 
 exports.handler = (req, resp, next) => {
 
@@ -30,9 +33,18 @@ exports.handler = (req, resp, next) => {
             )
         );
 
+    const objResult = new result.ResultUserEmail(
+        new bpUser.BPUser(
+            new userDAO.UserDAO()
+        )
+    );
+
     return objBpTestProcessor.execute(idAnswer).then(result => {
-        return resp.status(200).json({ "responseCode": 200, "response": result });
-    }).catch(err => {
+        objResult.sendResultToEmail(result.userId, result);       
+        return new Promise((resolve, reject) => resolve(result));
+    }).then(result =>
+        resp.status(200).json({ "responseCode": 200, "response": result })
+    ).catch(err => {
         let error = new Error(err.toString());
         error.name = "ProgressusUnexpected";
         return next(error);

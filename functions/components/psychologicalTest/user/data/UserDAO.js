@@ -1,9 +1,9 @@
 const admin = require("firebase-admin");
 
-class AnswersUserDAO {
+class UserDAO {
 
     constructor() {
-        this.ref = 'answersUser';
+        this.ref = 'users';
         this.adminDB = admin.firestore();        
     }
 
@@ -15,4 +15,4 @@ class AnswersUserDAO {
     
 }
 
-exports.AnswersUserDAO = AnswersUserDAO;
+exports.UserDAO = UserDAO;

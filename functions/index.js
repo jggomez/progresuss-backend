@@ -6,6 +6,7 @@ const utils = require('./components/util/Utility.js');
 const express = require('express');
 const cors = require('cors');
 
+//firebase functions:config:set configuration.email="XXXX" configuration.password="XXXXXX"
 // Initialize variables
 const app = express();
 const util = new utils.Utility();

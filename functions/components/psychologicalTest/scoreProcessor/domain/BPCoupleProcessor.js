@@ -6,7 +6,7 @@ class BPCoupleProcessor {
         this.BPTypeTestScore = BPTypeTestScore;
     }
 
-    calculate(typeTestId, answers) {
+    calculate(typeTestId, answers, userId) {
 
         let interactionSatisfactionScore = 0;
         let emotionalSatisfactionScore = 0;
@@ -60,7 +60,8 @@ class BPCoupleProcessor {
             return {
                 numSessions: recommendation.numSessions,
                 therapeuticPackage: recommendation.therapeuticPackage,
-                result: result
+                result: result,
+                userId: userId
             };
         });
     }
