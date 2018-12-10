@@ -2,6 +2,7 @@
   "projects": {
     "default": "progressus-dev",
     "progressusdev": "progressus-dev",
-    "progressusprd": "progressus-prd"
+    "progressusprd": "progressus-prd",
+    "progressuspr": "progressus-prd"
   }
 }
