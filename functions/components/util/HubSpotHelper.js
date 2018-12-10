@@ -1,4 +1,7 @@
 const requestAPI = require('request')
+const functions = require('firebase-functions')
+
+const claveapihubspot = functions.config().configuration.claveapihubspot
 
 class HubSpotHelper {
   createUser (firstname, lastname, email, phone, city) {
@@ -8,9 +11,10 @@ class HubSpotHelper {
           'content-type': 'application/json'
         },
         url:
-          'https://api.hubapi.com/contacts/v1/contact/?hapikey=84bf251d-2ee6-441d-9628-062f3a3746c3',
+          `https://api.hubapi.com/contacts/v1/contact/?hapikey=${claveapihubspot}`,
         body: JSON.stringify({
-          properties: [
+          properties: 
+          [
             {
               property: 'email',
               value: email
